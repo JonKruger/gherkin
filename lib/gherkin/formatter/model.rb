@@ -109,6 +109,20 @@ module Gherkin
         end
       end
 
+      class ExamplesFile < TagStatement
+        native_impl('gherkin')
+
+        attr_accessor :comments, :description, :line
+
+        def initialize(comments, description, line)
+          @comments, @description, @line = comments, description, line
+        end
+
+        def replay(formatter)
+          formatter.examples(self)
+        end
+      end
+
       class Step < BasicStatement
         native_impl('gherkin')
 

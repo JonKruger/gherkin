@@ -190,6 +190,11 @@ static VALUE rb_eGherkinLexingError;
   action store_row {
     rb_funcall(listener, rb_intern("row"), 2, current_row, INT2FIX(lexer->current_line));
   }
+  
+  action store_examples_file_content {
+    STORE_ATTR(examples_file);
+    lexer->mark = 0;
+  }
 
   action end_feature {
     if (cs < lexer_first_final) {

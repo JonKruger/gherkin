@@ -20,7 +20,7 @@
   ScenarioHeadingEnd = EOL+ space* ( I18N_Feature | I18N_Background | I18N_Scenario | I18N_ScenarioOutline | I18N_Step | '@' | '#' | EOF ) >next_keyword_start;
   BackgroundHeadingEnd = EOL+ space* ( I18N_Feature | I18N_Scenario | I18N_ScenarioOutline | I18N_Step | '@' | '#'| EOF ) >next_keyword_start;
   ScenarioOutlineHeadingEnd = EOL+ space* ( I18N_Feature | I18N_Scenario | I18N_Step | '@' | '#' | EOF ) >next_keyword_start;
-  ExamplesHeadingEnd = EOL+ space* ( I18N_Feature | '|' | '#') >next_keyword_start;
+  ExamplesHeadingEnd = EOL+ space* ( I18N_Feature | '|' | '#' | '%include' ) >next_keyword_start;
  
   FeatureHeading = space* I18N_Feature %begin_content ^FeatureHeadingEnd* :>> FeatureHeadingEnd @store_feature_content;
   BackgroundHeading = space* I18N_Background %begin_content ^BackgroundHeadingEnd* :>> BackgroundHeadingEnd @store_background_content;
@@ -39,12 +39,13 @@
   Cell = PIPE (ESCAPED_PIPE | (any - (PIPE|EOL))+ )* >begin_cell_content %store_cell_content;
   RowBody = space* Cell** PIPE :>> (space* EOL+ space*) %store_row;
   Row = StartRow :>> RowBody <: EndRow?;
+  ExamplesFile = space* '%include' >begin_content ^EOL* %store_examples_file_content :> EOL+;
   
   StartPyString = '"""' >start_pystring space* :>> EOL; 
   EndPyString = (space* '"""') >next_keyword_start; 
   PyString = space* StartPyString %begin_pystring_content (^EOL | EOL)* :>> EndPyString %store_pystring_content space* EOL+;
   
-  Tokens = BOM? (space | EOL)* (Tags | Comment | FeatureHeading | BackgroundHeading | ScenarioHeading | ScenarioOutlineHeading | ExamplesHeading | Step | Row | PyString)* (space | EOL)* EOF;
+  Tokens = BOM? (space | EOL)* (Tags | Comment | FeatureHeading | BackgroundHeading | ScenarioHeading | ScenarioOutlineHeading | ExamplesHeading | Step | Row | ExamplesFile | PyString)* (space | EOL)* EOF;
 
   main := Tokens %end_feature @!end_feature;
 }%%

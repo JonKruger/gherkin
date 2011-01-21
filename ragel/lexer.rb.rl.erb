@@ -40,7 +40,8 @@ module Gherkin
         }
 
         action store_scenario_content {
-          store_keyword_content(:scenario, data, p, eof) { |con| unindent(@start_col + 2, con).rstrip }
+        :q
+        store_keyword_content(:scenario, data, p, eof) { |con| unindent(@start_col + 2, con).rstrip }
           p = @next_keyword_start - 1 if @next_keyword_start                    
           @next_keyword_start = nil
         }
@@ -112,6 +113,12 @@ module Gherkin
 
         action store_row {
           @listener.row(current_row, @current_line)
+        }
+
+        action store_examples_file_content {
+          con = utf8_pack(data[@content_start...p]).strip
+          @listener.examples_file(con, @line_number)
+          @keyword_start = nil
         }
 
         action end_feature {

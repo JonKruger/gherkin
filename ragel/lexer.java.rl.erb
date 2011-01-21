@@ -127,6 +127,11 @@ public class <%= @i18n.underscored_iso_code.upcase %> implements Lexer {
     action store_row {
       listener.row(currentRow, currentLine);
     }
+    
+    action store_examples_file_content {
+      listener.examples_file(substring(data, contentStart, p).trim(), lineNumber);
+      keywordStart = -1;
+    }
 
     action end_feature {
       if(cs < lexer_first_final) {

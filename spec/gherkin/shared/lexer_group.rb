@@ -268,6 +268,16 @@ f'real
             [:eof]
           ]
         end
+
+        it "should parse examples with a file include statement" do
+          scan(%{Examples: 
+               %include file: import/examples.csv})
+          @listener.to_sexp.should == [
+            [:examples, "Examples", "", "", 1],
+            [:examples_file, "%include file: import/examples.csv", 2],
+            [:eof]
+          ]
+        end
       end
       
       describe "Steps" do

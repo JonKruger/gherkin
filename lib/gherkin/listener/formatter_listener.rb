@@ -47,6 +47,11 @@ module Gherkin
         @examples_statement = Formatter::Model::Examples.new(grab_comments!, grab_tags!, keyword, name, description, line)
       end
 
+      def examples_file(description, line)
+        replay_step_or_examples
+        @examples_file_statement = Formatter::Model::ExamplesFile.new(grab_comments!, description, line)
+      end
+
       def step(keyword, name, line)
         replay_step_or_examples
         @step_statement = Formatter::Model::Step.new(grab_comments!, keyword, name, line)

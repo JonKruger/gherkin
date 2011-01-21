@@ -41,6 +41,14 @@ Feature: Gherkin Feature lexer/parser
           | Sparrow      | Alicanto       |
           | Goldfish     | Baldanders     |
           | Cow          | Hsiao          |
+
+        Scenario Outline: Susie
+          Given that Susie is <adjective>
+          When I hit her with a snowball
+          Then I will laugh nefariously
+
+          Examples:
+            %include file: susie.csv
           
         Scenario: Sense of humor detection
           Given the following excerpt:
@@ -161,6 +169,12 @@ Feature: Gherkin Feature lexer/parser
             | missing | passing     |
             | passing | passing     |
             | failing | passing     |
+
+          Examples: Too many to list here
+            %include file: stuff.csv
+          
+          Examples: Even more stuff
+            %include http://gherkin.com/stuff.csv
           
           Examples: Only passing
             |  state   | other_state |
